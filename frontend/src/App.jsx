@@ -3,6 +3,37 @@ import './App.css'
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api'
 
+// API helper function with better error handling
+const apiCall = async (url, options = {}) => {
+  try {
+    console.log(`API Call: ${options.method || 'GET'} ${url}`);
+    const response = await fetch(url, {
+      ...options,
+      headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+      }
+    });
+    
+    if (!response.ok) {
+      const errorText = await response.text();
+      let errorMessage;
+      try {
+        const errorJson = JSON.parse(errorText);
+        errorMessage = errorJson.error || errorJson.message || `HTTP ${response.status}`;
+      } catch {
+        errorMessage = `HTTP ${response.status}: ${errorText}`;
+      }
+      throw new Error(errorMessage);
+    }
+    
+    return response;
+  } catch (error) {
+    console.error(`API Error for ${url}:`, error);
+    throw error;
+  }
+}
+
 function App() {
   const canvasRef = useRef(null)
   const [canvasData, setCanvasData] = useState({ width: 800, height: 600, elements: [] })
