@@ -382,6 +382,3 @@ canvas-pdf-app/
 4. Test thoroughly
 5. Submit a pull request
 
-## License
-
-MIT License - feel free to use this project for learning and development purposes.
