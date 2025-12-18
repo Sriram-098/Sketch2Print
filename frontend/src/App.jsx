@@ -1,9 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import './App.css'
 
-const API_BASE_URL = process.env.NODE_ENV === 'production' 
-  ? 'https://sketch2print.onrender.com/api'
-  : 'http://localhost:3001/api'
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api'
 
 function App() {
   const canvasRef = useRef(null)
